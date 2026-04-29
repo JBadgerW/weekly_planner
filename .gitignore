@@ -1,0 +1,11 @@
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex(busy)
+/tex_output/
+*.pdf
+*.jpg
+*.jpeg
+*.png
+
