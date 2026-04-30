@@ -4,39 +4,70 @@ import datetime
 
 
 def date_picker(stdscr):
-    curses.curs_set(0)  # Hide cursor
+    # Set calendar to start on Sunday
+    calendar.setfirstweekday(calendar.SUNDAY)
+
+    curses.curs_set(0)
+    curses.start_color()
+    curses.use_default_colors()
+
+    # 1. Standard text (White on Black)
+    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
+    stdscr.bkgd(" ", curses.color_pair(1))
+
+    # 2. Setup colors for out-of-month days
+    if curses.COLORS >= 256:
+        curses.init_pair(2, 8, curses.COLOR_BLACK)  # Gray on Black
+        curses.init_pair(3, 8, curses.COLOR_WHITE)  # Gray on White
+        gray_unselected = curses.color_pair(2)
+        gray_selected = curses.color_pair(3)
+    else:
+        curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        gray_unselected = curses.color_pair(2) | curses.A_DIM
+        gray_selected = curses.color_pair(3) | curses.A_DIM
+
     today = datetime.date.today()
     year, month = today.year, today.month
+    cal_obj = calendar.Calendar(firstweekday=calendar.SUNDAY)
 
-    # Initialize the selected week based on today's date
-    cal = calendar.monthcalendar(year, month)
-    selected_week = 0
-    for i, week in enumerate(cal):
-        if today.day in week:
-            selected_week = i
-            break
+    cal = cal_obj.monthdatescalendar(year, month)
+    selected_week = next((i for i, week in enumerate(cal) if today in week), 0)
 
     while True:
         stdscr.clear()
-        cal = calendar.monthcalendar(year, month)
-
-        # Clamp selected_week in case the new month has fewer weeks
+        cal = cal_obj.monthdatescalendar(year, month)
         selected_week = min(selected_week, len(cal) - 1)
 
         # Draw Header
         header = f"{calendar.month_name[month]} {year}"
         stdscr.addstr(0, max(0, (20 - len(header)) // 2), header, curses.A_BOLD)
-        stdscr.addstr(1, 0, "Mo Tu We Th Fr Sa Su")
+        stdscr.addstr(1, 0, "Su Mo Tu We Th Fr Sa")
 
         # Draw Calendar Weeks
         for i, week in enumerate(cal):
-            attr = curses.A_REVERSE if i == selected_week else curses.A_NORMAL
-            week_str = "".join("   " if day == 0 else f"{day:2} " for day in week)
-            stdscr.addstr(2 + i, 0, week_str.rstrip(), attr)
+            is_selected_week = i == selected_week
+
+            if is_selected_week:
+                stdscr.addstr(
+                    2 + i, 0, " " * 20, curses.color_pair(1) | curses.A_REVERSE
+                )
+
+            for j, day_date in enumerate(week):
+                is_current_month = day_date.month == month
+
+                if is_current_month:
+                    attr = (
+                        curses.color_pair(1) | curses.A_REVERSE
+                        if is_selected_week
+                        else curses.color_pair(1)
+                    )
+                else:
+                    attr = gray_selected if is_selected_week else gray_unselected
+
+                stdscr.addstr(2 + i, j * 3, f"{day_date.day:2}", attr)
 
         stdscr.refresh()
-
-        # Handle Navigation
         key = stdscr.getch()
 
         if key in [curses.KEY_UP, ord("k")]:
@@ -52,16 +83,10 @@ def date_picker(stdscr):
             if month == 13:
                 month, year = 1, year + 1
         elif key in [10, 13, curses.KEY_ENTER]:
-            # Find a valid day in the highlighted week to calculate its Monday
-            valid_day = next(day for day in cal[selected_week] if day != 0)
-            selected_date = datetime.date(year, month, valid_day)
-
-            # Subtract the weekday index (Monday is 0) to get the exact Monday
-            monday = selected_date - datetime.timedelta(days=selected_date.weekday())
-            return monday
+            # With Sunday at index 0, Monday is always at index 1
+            return cal[selected_week][1]
 
 
-# Example usage:
 if __name__ == "__main__":
     result = curses.wrapper(date_picker)
     print(f"You selected the week starting on Monday: {result}")
