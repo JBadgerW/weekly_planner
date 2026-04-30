@@ -98,9 +98,7 @@ class WeekPlanner:
         self.course = course.strip()
         self.schedule = schedule
         self.date_in_week = (
-            datetime.datetime.today().date()
-            if not date_in_week
-            else date_in_week.date()
+            datetime.datetime.today().date() if not date_in_week else date_in_week
         )
 
         if len(self.schedule) < 1 or len(self.schedule) > 10:
