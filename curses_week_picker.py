@@ -4,21 +4,17 @@ import datetime
 
 
 def date_picker(stdscr):
-    # Set calendar to start on Sunday
     calendar.setfirstweekday(calendar.SUNDAY)
-
     curses.curs_set(0)
     curses.start_color()
     curses.use_default_colors()
 
-    # 1. Standard text (White on Black)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     stdscr.bkgd(" ", curses.color_pair(1))
 
-    # 2. Setup colors for out-of-month days
     if curses.COLORS >= 256:
-        curses.init_pair(2, 8, curses.COLOR_BLACK)  # Gray on Black
-        curses.init_pair(3, 8, curses.COLOR_WHITE)  # Gray on White
+        curses.init_pair(2, 8, curses.COLOR_BLACK)
+        curses.init_pair(3, 8, curses.COLOR_WHITE)
         gray_unselected = curses.color_pair(2)
         gray_selected = curses.color_pair(3)
     else:
@@ -35,20 +31,21 @@ def date_picker(stdscr):
     selected_week = next((i for i, week in enumerate(cal) if today in week), 0)
 
     while True:
-        stdscr.clear()
+        # Use erase() instead of clear() to prevent flickering
+        stdscr.erase()
+
         cal = cal_obj.monthdatescalendar(year, month)
         selected_week = min(selected_week, len(cal) - 1)
 
-        # Draw Header
         header = f"{calendar.month_name[month]} {year}"
-        stdscr.addstr(0, max(0, (20 - len(header)) // 2), header, curses.A_BOLD)
+        stdscr.addstr(0, 0, header.center(20), curses.A_BOLD)
         stdscr.addstr(1, 0, "Su Mo Tu We Th Fr Sa")
 
-        # Draw Calendar Weeks
         for i, week in enumerate(cal):
             is_selected_week = i == selected_week
 
             if is_selected_week:
+                # Draws the highlight bar across the full width
                 stdscr.addstr(
                     2 + i, 0, " " * 20, curses.color_pair(1) | curses.A_REVERSE
                 )
@@ -83,7 +80,6 @@ def date_picker(stdscr):
             if month == 13:
                 month, year = 1, year + 1
         elif key in [10, 13, curses.KEY_ENTER]:
-            # With Sunday at index 0, Monday is always at index 1
             return cal[selected_week][1]
 
 
