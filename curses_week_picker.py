@@ -2,8 +2,8 @@ import curses
 import calendar
 import datetime
 
-LEFT_SPACER = 3
-TOP_SPACER = 3
+PADDING_LEFT = 3
+PADDING_TOP = 3
 
 
 def date_picker(stdscr):
@@ -41,8 +41,8 @@ def date_picker(stdscr):
         selected_week = min(selected_week, len(cal) - 1)
 
         header = f"{calendar.month_name[month]} {year}"
-        stdscr.addstr(0, LEFT_SPACER, header.center(20), curses.A_BOLD)
-        stdscr.addstr(1, LEFT_SPACER, "Su Mo Tu We Th Fr Sa")
+        stdscr.addstr(0 + PADDING_TOP, PADDING_LEFT, header.center(20), curses.A_BOLD)
+        stdscr.addstr(1 + PADDING_TOP, PADDING_LEFT, "Su Mo Tu We Th Fr Sa")
 
         for i, week in enumerate(cal):
             is_selected_week = i == selected_week
@@ -50,8 +50,8 @@ def date_picker(stdscr):
             if is_selected_week:
                 # Draws the highlight bar across the full width
                 stdscr.addstr(
-                    2 + i,
-                    LEFT_SPACER,
+                    2 + i + PADDING_TOP,
+                    PADDING_LEFT,
                     " " * 20,
                     curses.color_pair(1) | curses.A_REVERSE,
                 )
@@ -68,7 +68,9 @@ def date_picker(stdscr):
                 else:
                     attr = gray_selected if is_selected_week else gray_unselected
 
-                stdscr.addstr(2 + i, j * 3 + LEFT_SPACER, f"{day_date.day:2}", attr)
+                stdscr.addstr(
+                    2 + i + PADDING_TOP, j * 3 + PADDING_LEFT, f"{day_date.day:2}", attr
+                )
 
         stdscr.refresh()
         key = stdscr.getch()
