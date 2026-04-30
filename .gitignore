@@ -1,11 +1,66 @@
-*.aux
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# macOS metadata
+.DS_Store
+
+# Logs and local state
+*.log
+*.tmp
+*.swp
+*.synctex.gz
+*.out
 *.fdb_latexmk
 *.fls
-*.log
-*.synctex(busy)
-/tex_output/
+*.aux
+*.bbl
+*.blg
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.xdv
 *.pdf
-*.jpg
-*.jpeg
-*.png
 
+
+# Test and coverage results
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.cache/
+.pytest_cache/
+
+# Editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
+*.manifest
+*.spec
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environment (just in case)
+.venv/
+env/
+venv/
+
+# uv specific
+.uv/
+uv.lock
+
+# my additions
+tex_output/
