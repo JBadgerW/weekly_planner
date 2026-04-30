@@ -3,7 +3,7 @@ import calendar
 import datetime
 
 PADDING_LEFT = 3
-PADDING_TOP = 3
+PADDING_TOP = 1
 
 
 def date_picker(stdscr):
