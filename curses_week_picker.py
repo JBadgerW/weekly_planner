@@ -3,7 +3,7 @@ import calendar
 import datetime
 
 PADDING_LEFT = 3
-PADDING_TOP = 1
+PADDING_TOP = 2
 
 
 def date_picker(stdscr):
@@ -40,12 +40,16 @@ def date_picker(stdscr):
         cal = cal_obj.monthdatescalendar(year, month)
         selected_week = min(selected_week, len(cal) - 1)
 
+        stdscr.addstr(0, PADDING_LEFT, "Choose the week to print planners for.")
         header = f"{calendar.month_name[month]} {year}"
         stdscr.addstr(0 + PADDING_TOP, PADDING_LEFT, header.center(20), curses.A_BOLD)
         stdscr.addstr(1 + PADDING_TOP, PADDING_LEFT, "Su Mo Tu We Th Fr Sa")
 
         for i, week in enumerate(cal):
             is_selected_week = i == selected_week
+            is_this_week = week[0] == today - datetime.timedelta(
+                days=today.weekday() + 1
+            )
 
             if is_selected_week:
                 # Draws the highlight bar across the full width
@@ -70,6 +74,14 @@ def date_picker(stdscr):
 
                 stdscr.addstr(
                     2 + i + PADDING_TOP, j * 3 + PADDING_LEFT, f"{day_date.day:2}", attr
+                )
+
+            if is_this_week:
+                stdscr.addstr(
+                    2 + i + PADDING_TOP,
+                    PADDING_LEFT + 22,
+                    "This week",
+                    attr,
                 )
 
         stdscr.refresh()
