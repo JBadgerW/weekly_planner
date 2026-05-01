@@ -333,13 +333,13 @@ class WeekPlanIO:
 #
 
 if __name__ == "__main__":
-    planner = WeekPlanner(
-        "Test Class", "trf", datetime.datetime.today() + datetime.timedelta(days=7)
-    )
+    #    planner = WeekPlanner(
+    #    "Test Class", "trf", datetime.datetime.today() + datetime.timedelta(days=7)
+    # )
 
-    thing_io = WeekPlanIO(planner)
+    # thing_io = WeekPlanIO(planner)
     # thing_io.save_latex()
-    thing_io.compile_latex()
+    # thing_io.compile_latex()
 
     #     week_chooser = (
     #         input("Do you want planners for 'this' week (default) or 'next' week? ")
