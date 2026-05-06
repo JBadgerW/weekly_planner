@@ -74,7 +74,7 @@ LATEX_TEMPLATE = r"""\documentclass[letterpaper, landscape]{article}
 
 % Class headline and week
 \node[anchor=south west] at ($(origin)+(0.25in,\classline in)$) {
-  \makebox[0.98\textwidth][s]{\Huge \textsc{Weekly Plan \hfill !!DATE_RANGE!! \hfill \class}}
+  \makebox[0.957\textwidth][s]{\Huge \textsc{Weekly Plan \hfill !!DATE_RANGE!! \hfill \class}}
 };
 
 % HW labels
