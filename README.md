@@ -18,7 +18,7 @@ work on Windows or MacOS.
 
 2. Run 'python3 weekly_planner.py'.
 
-3. Choose the week you want and press <enter>.
+3. Choose the week you want and press [enter].
 
 4. The planning pages should save and compile in the subfolder ./tex_output/.
 
