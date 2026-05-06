@@ -44,8 +44,8 @@ LATEX_TEMPLATE = r"""\documentclass[letterpaper, landscape]{article}
 \usetikzlibrary{calc}
 
 % Horizontal line positions
-\newcommand{\classline}{8}
-\newcommand{\weekdayline}{7.5}
+\newcommand{\classline}{7.75}
+\newcommand{\weekdayline}{7.25}
 \newcommand{\headlinesheight}{0.5}
 \newcommand{\hwline}{2.75}
 \newcommand{\notesline}{1.5}
@@ -73,7 +73,7 @@ LATEX_TEMPLATE = r"""\documentclass[letterpaper, landscape]{article}
 !!DAYS_OF_WEEK_LABELS!!
 
 % Class headline and week
-\node[anchor=south west] at ($(origin)+(0in,\classline in)$) {
+\node[anchor=south west] at ($(origin)+(0.25in,\classline in)$) {
   \makebox[0.98\textwidth][s]{\Huge \textsc{Weekly Plan \hfill !!DATE_RANGE!! \hfill \class}}
 };
 
@@ -162,7 +162,8 @@ class WeekPlanner:
         latex = []
 
         for i, day_date in enumerate(self.schedule_dates):
-            x_pos = round(i * self.column_width, 3)
+            label_shift = 0.25 if i == 0 else 0
+            x_pos = round(i * self.column_width + label_shift, 3)
             latex.append(
                 f"\\node[anchor=south west] at ($(origin)+({x_pos} in, \\weekdayline in)$) {{\n"
                 f"  \\huge {day_date.strftime('%A')} \\large {day_date.strftime('%-m/%-d')}}};"
@@ -175,9 +176,11 @@ class WeekPlanner:
         latex = []
 
         for i in range(self.num_columns):
+            label_shift = 0.25 if i == 0 else 0
             latex.append(
-                f"\\node[anchor=north west] at ($(origin)+({round(i * self.column_width, 3)} in, "
-                " \\hwline in)$) {\\Large HW};"
+                "\\node[anchor=north west] at ($(origin)+("
+                f"{round(i * self.column_width + label_shift, 3)} in, "
+                "\\hwline in)$) {\\Large HW};"
             )
 
         return "\n".join(latex)
@@ -187,8 +190,10 @@ class WeekPlanner:
         latex = []
 
         for i in range(self.num_columns):
+            label_shift = 0.25 if i == 0 else 0
             latex.append(
-                f"\\node[anchor=north west] at ($(origin)+({round(i * self.column_width, 3)} "
+                "\\node[anchor=north west] at ($(origin)+("
+                f"{round(i * self.column_width + label_shift, 3)} "
                 "in, \\notesline in)$) {\\Large Notes};"
             )
 
