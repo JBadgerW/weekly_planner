@@ -1,4 +1,4 @@
-typst_planner_template = r"""
+
 #set page(
   paper: "us-letter",
   flipped: true,
@@ -9,10 +9,14 @@ typst_planner_template = r"""
 // ==================================================
 // DOCUMENT VARIABLES
 // ==================================================
-#let class = "!!COURSE!!"
-#let week-of = "!!DATE_RANGE!!"
+#let class = "Humanities IV"
+#let week-of = "5/11 -- 5/15"
 #let days = (
-!!DAYS_DATES!!
+  ("Monday", "5/11"),
+  ("Tuesday", "5/12"),
+  ("Wednesday", "5/13"),
+  ("Thursday", "5/14"),
+  ("Friday", "5/15"),
 )
 #let num-days = days.len()
 
@@ -78,4 +82,4 @@ typst_planner_template = r"""
     text(size: 14pt)[Notes]
   )),
 )
-"""
+
