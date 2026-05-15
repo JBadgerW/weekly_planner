@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import datetime
 from datetime import date
 from pathlib import Path
