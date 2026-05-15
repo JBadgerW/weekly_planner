@@ -5,6 +5,7 @@ from datetime import date
 from pathlib import Path
 import subprocess
 import curses
+import json
 
 from curses_week_picker import date_picker
 from typst_planner_template import typst_planner_template
@@ -12,12 +13,12 @@ from typst_planner_template import typst_planner_template
 LANDSCAPE_WIDTH = 11
 
 # Courses and their meeting days
-COURSES = {
-    "Humanities IV": "MTWRF",
-    "Geometry": "MWF",
-    "Advanced Math": "TF",
-    "Physical Science": "TRF",
-}
+# COURSES = {
+#    "Humanities IV": "MTWRF",
+#    "Geometry": "MWF",
+#    "Advanced Math": "TF",
+#    "Physical Science": "TRF",
+# }
 
 DAYS = {
     "M": "Monday",
@@ -165,6 +166,9 @@ class WeekPlanIO:
 
 if __name__ == "__main__":
     day_in_week = curses.wrapper(date_picker)
+
+    with open("./course_schedules.json", "r") as schedule_json:
+        COURSES = json.load(schedule_json)
 
     for course in COURSES.keys():
         planner = WeekPlanner(course, COURSES[course], day_in_week)

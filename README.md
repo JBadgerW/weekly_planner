@@ -5,7 +5,11 @@ This is a short script designed to create a weekly planner for my classes.
 
 # Requirements
 
-* A LaTeX installation with pdflatex.
+* The Typst compiler.
+
+* [deprecated; there's still a version that works with LaTeX, but the Typst
+  version with the template is way more elegant. If you want to use the LaTeX
+  version, you'll need...] A LaTeX installation with pdflatex.
 
 * Python
 
