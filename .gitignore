@@ -63,4 +63,7 @@ venv/
 uv.lock
 
 # my additions
+*.tex
 tex_output/
+typ_output/
+*.typ
